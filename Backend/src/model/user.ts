@@ -1,22 +1,17 @@
 // contains all the user related models
 
-import mongoose from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 // interface for the user model
-export interface IUser extends mongoose.Document {
+export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
   type: string;
 }
 
-// interface for the user schema
-export interface IUserSchema extends mongoose.Schema {
-  comparePassword(password: string): boolean;
-}
-
 // user schema
-const userSchema = new mongoose.Schema(
+const userSchema: Schema<IUser> = new Schema(
   {
     name: {
       type: String,
@@ -47,3 +42,8 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// export user model
+const User = mongoose.model<IUser>("User", userSchema);
+
+export default User;
