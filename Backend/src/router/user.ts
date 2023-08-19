@@ -1,6 +1,6 @@
 // auth and register route
 
-import express, { Request, Response } from "express";
+import express from "express";
 import { registerUser, loginUser } from "../controller/user";
 import { validateLogin, validateRegister } from "../utility/validate";
 import validateUsersRequest from "../middleware/validate";

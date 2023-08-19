@@ -2,6 +2,8 @@
 
 import express from "express";
 import userRouter from "./router/user";
+import categoryRouter from "./router/category";
+import productRouter from "./router/product";
 import dotenv from "dotenv";
 import mongoose, { mongo } from "mongoose";
 import rateLimitMiddleware from "./middleware/ratelimit";
@@ -27,6 +29,12 @@ app.get("/api", (req, res) => {
 
 // login and register route
 app.use("/api/users", userRouter);
+
+// category route
+app.use("/api/categories", categoryRouter);
+
+// product route
+app.use("/api/products", productRouter);
 
 // connect to DB and Serve the application at the given port
 mongoose
