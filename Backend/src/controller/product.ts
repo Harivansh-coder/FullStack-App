@@ -9,17 +9,17 @@ import mongoose from "mongoose";
 export const createProduct = async (req: Request, res: Response) => {
   // create product logic
   try {
-    const { title, description, price, categoryID, available } = req.body;
+    const { title, description, price, category, available } = req.body;
 
-    // check if categoryID is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(categoryID)) {
+    // check if category is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(category)) {
       return res.status(400).json({
         error: "Invalid category id",
       });
     }
 
     // check if category exists in database
-    const categoryExists = await Category.exists({ _id: categoryID });
+    const categoryExists = await Category.exists({ _id: category });
 
     if (!categoryExists) {
       return res.status(400).json({
@@ -32,7 +32,7 @@ export const createProduct = async (req: Request, res: Response) => {
       title,
       description,
       price,
-      categoryID,
+      category,
       available,
     });
 
@@ -60,7 +60,7 @@ export const createProduct = async (req: Request, res: Response) => {
 export const getAllProducts = async (req: Request, res: Response) => {
   // get all products logic
   try {
-    const products: IProduct[] = await Product.find();
+    const products: IProduct[] = await Product.find().populate("category");
 
     res.status(200).json({
       products,
@@ -68,6 +68,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       error: "An error occurred",
+      message: error.message,
     });
   }
 };
@@ -85,7 +86,9 @@ export const getProduct = async (req: Request, res: Response) => {
       });
     }
 
-    const product: IProduct | null = await Product.findById(id);
+    const product: IProduct | null = await Product.findById(id).populate(
+      "category"
+    );
 
     if (!product) {
       return res.status(404).json({
@@ -127,17 +130,17 @@ export const updateProduct = async (req: Request, res: Response) => {
     }
 
     // now that we know product exists, we can update it
-    const { title, description, price, categoryID, available } = req.body;
+    const { title, description, price, category, available } = req.body;
 
-    // check if categoryID is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(categoryID)) {
+    // check if category is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(category)) {
       return res.status(400).json({
         error: "Invalid category id",
       });
     }
 
     // check if category exists in database
-    const categoryExists = await Category.exists({ _id: categoryID });
+    const categoryExists = await Category.exists({ _id: category });
 
     if (!categoryExists) {
       return res.status(400).json({
@@ -152,7 +155,7 @@ export const updateProduct = async (req: Request, res: Response) => {
         title,
         description,
         price,
-        categoryID,
+        category,
         available,
       },
       { new: true }

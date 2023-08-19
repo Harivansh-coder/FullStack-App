@@ -20,7 +20,7 @@ export const validateRegister = yup.object({
       .required("password is required")
       .min(8, "password is too short")
       .max(50, "password is too long"),
-    type: yup.string().oneOf(["customer", "seller"]).default("customer"),
+    type: yup.string().oneOf(["buyer", "seller"]).default("buyer"),
   }),
 });
 
@@ -64,7 +64,7 @@ export const validateProduct = yup.object({
       .number()
       .required("price is required")
       .min(0, "price must be a non negative number"),
-    categoryID: yup.string().required("categoryID is required"),
+    category: yup.string().required("category ID is required"),
 
     available: yup.boolean().default(true),
   }),
@@ -82,7 +82,18 @@ export const validateUpdateProduct = yup.object({
       .min(3, "description is too short")
       .max(2000, "description is too long"),
     price: yup.number().min(0, "price must be a non negative number"),
-    categoryID: yup.string(),
+    category: yup.string(),
     available: yup.boolean(),
+  }),
+});
+
+// validate the request body of the create cart route
+export const validateCart = yup.object({
+  body: yup.object({
+    product: yup.string().required("product ID is required"),
+    quantity: yup
+      .number()
+      .required("quantity is required")
+      .min(1, "quantity must be a positive number"),
   }),
 });

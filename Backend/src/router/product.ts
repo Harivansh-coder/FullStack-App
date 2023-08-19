@@ -23,7 +23,7 @@ productRouter.get("/:id", getProduct);
 productRouter.post(
   "/",
   verifyUserToken,
-  checkUserType,
+  checkUserType("seller"),
   validateRequestBody(validateProduct),
   createProduct
 );
@@ -31,12 +31,17 @@ productRouter.post(
 productRouter.put(
   "/:id",
   verifyUserToken,
-  checkUserType,
+  checkUserType("seller"),
   validateRequestBody(validateUpdateProduct),
   updateProduct
 );
 
-productRouter.delete("/:id", verifyUserToken, checkUserType, deleteProduct);
+productRouter.delete(
+  "/:id",
+  verifyUserToken,
+  checkUserType("seller"),
+  deleteProduct
+);
 
 // export the productRouter
 export default productRouter;

@@ -22,7 +22,7 @@ categoryRouter.get("/:id", getCategory);
 categoryRouter.post(
   "/",
   verifyUserToken,
-  checkUserType,
+  checkUserType("seller"),
   validateRequestBody(validateCategory),
   createCategory
 );
@@ -30,12 +30,17 @@ categoryRouter.post(
 categoryRouter.put(
   "/:id",
   verifyUserToken,
-  checkUserType,
+  checkUserType("seller"),
   validateRequestBody(validateCategory),
   updateCategory
 );
 
-categoryRouter.delete("/:id", verifyUserToken, checkUserType, deleteCategory);
+categoryRouter.delete(
+  "/:id",
+  verifyUserToken,
+  checkUserType("seller"),
+  deleteCategory
+);
 
 // export the categoryRouter
 export default categoryRouter;

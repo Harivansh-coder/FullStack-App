@@ -1,7 +1,6 @@
 // contains all the user related controller functions
 
 import { Request, Response } from "express";
-import mongoose from "mongoose";
 import User, { IUser } from "../model/user";
 import bcrypt from "bcrypt";
 import generateToken from "../utility/token";

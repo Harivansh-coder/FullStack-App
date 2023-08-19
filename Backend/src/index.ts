@@ -7,6 +7,7 @@ import productRouter from "./router/product";
 import dotenv from "dotenv";
 import mongoose, { mongo } from "mongoose";
 import rateLimitMiddleware from "./middleware/ratelimit";
+import cartRouter from "./router/cart";
 
 // initialize configuration
 dotenv.config();
@@ -35,6 +36,12 @@ app.use("/api/categories", categoryRouter);
 
 // product route
 app.use("/api/products", productRouter);
+
+// cart management route
+app.use("/api/carts", cartRouter);
+
+// order management route
+// app.use("/api/orders", orderRouter);
 
 // connect to DB and Serve the application at the given port
 mongoose
