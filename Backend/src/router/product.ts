@@ -1,28 +1,32 @@
 // all product routes
 
 import express from "express";
+import {
+  createProduct,
+  getAllProducts,
+  getProduct,
+  updateUpdate,
+  deleteProduct,
+} from "../controller/product";
+import validateRequestBody from "../middleware/validate";
+import { validateProduct, validateUpdateProduct } from "../utility/validate";
 
 const productRouter = express.Router();
 
 // product route
-productRouter.get("/", (req, res) => {
-  res.send("Get all products");
-});
+productRouter.get("/", getAllProducts);
 
-productRouter.get("/:id", (req, res) => {
-  res.send("Get a product");
-});
+productRouter.get("/:id", getProduct);
 
-productRouter.post("/", (req, res) => {
-  res.send("Create a product");
-});
+productRouter.post("/", validateRequestBody(validateProduct), createProduct);
 
-productRouter.put("/:id", (req, res) => {
-  res.send("Update a product");
-});
+productRouter.put(
+  "/:id",
+  validateRequestBody(validateUpdateProduct),
+  updateUpdate
+);
 
-productRouter.delete("/:id", (req, res) => {
-  res.send("Delete a product");
-});
+productRouter.delete("/:id", deleteProduct);
+
 // export the productRouter
 export default productRouter;

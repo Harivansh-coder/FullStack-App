@@ -18,6 +18,7 @@ const productSchema: Schema<IProduct> = new Schema(
       type: String,
       required: true,
       trim: true,
+      unique: true,
       min: 3,
       max: 50,
     },
