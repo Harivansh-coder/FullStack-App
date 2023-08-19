@@ -1,81 +1,20 @@
-// // order route for buyer to make order
+// order route for buyer to make order
 
-// import express, { Request, Response } from "express";
-// import Cart from "../model/cart";
-// import Order from "../model/order";
+import express, { Request, Response } from "express";
+import { getAllOrders, getOrder, placeOrder } from "../controller/order";
+import verifyUserToken from "../middleware/authenticate";
+import checkUserType from "../middleware/checkUser";
 
-// // place order route for buyer
+const orderRouter = express.Router();
 
-// export const placeOrder = async (req: Request, res: Response) => {
+// place order route for buyer
+orderRouter.post("/place", verifyUserToken, checkUserType("buyer"), placeOrder);
 
-//     try {
+// get all orders for a buyer
+orderRouter.get("/", verifyUserToken, checkUserType("buyer"), getAllOrders);
 
-//             // get the cart of the user
+// get a single order detail for a buyer
+orderRouter.get("/:id", verifyUserToken, checkUserType("buyer"), getOrder);
 
-//             const cart = await Cart.findOne({ user: req.user.id });
-
-//             // check if cart is empty
-
-//             if (!cart) {
-
-//                 return res.status(404).json({
-
-//                     error: "Cart not found",
-
-//                 });
-
-//             }
-
-//             // check if cart is empty
-
-//             if (cart.items.length === 0) {
-
-//                 return res.status(400).json({
-
-//                     error: "Cart is empty",
-
-//                 });
-
-//             }
-
-//             // create order
-
-//             const order = await Order.create({
-
-//                 user: req.user.id,
-
-//                 items: cart.items,
-
-//                 totalAmount: cart.totalAmount,
-
-//             });
-
-//             // empty the cart
-
-//             await Cart.findOneAndUpdate(
-
-//                 { user: req.user.id },
-
-//                 {
-
-//                     $set: {
-
-//                         items: [],
-
-//                         totalAmount: 0,
-
-//                     },
-
-//                 },
-
-//                 { new: true }
-
-//             );
-
-//             res.status(200).json({
-
-//                 order,
-
-//             });
-
-//         }
+// export the orderRouter
+export default orderRouter;
