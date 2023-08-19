@@ -2,19 +2,37 @@
 
 import { Request, Response } from "express";
 import Product, { IProduct } from "../model/product";
+import Category from "../model/category";
 import mongoose from "mongoose";
+
 // create product
 export const createProduct = async (req: Request, res: Response) => {
   // create product logic
   try {
-    const { title, description, price, category, available } = req.body;
+    const { title, description, price, categoryID, available } = req.body;
+
+    // check if categoryID is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(categoryID)) {
+      return res.status(400).json({
+        error: "Invalid category id",
+      });
+    }
+
+    // check if category exists in database
+    const categoryExists = await Category.exists({ _id: categoryID });
+
+    if (!categoryExists) {
+      return res.status(400).json({
+        error: "category does not exist",
+      });
+    }
 
     // create product instance
     const product = new Product({
       title,
       description,
       price,
-      category,
+      categoryID,
       available,
     });
 
@@ -32,6 +50,7 @@ export const createProduct = async (req: Request, res: Response) => {
     } else {
       res.status(500).json({
         error: "An error occurred",
+        message: error.message,
       });
     }
   }
@@ -85,32 +104,59 @@ export const getProduct = async (req: Request, res: Response) => {
 };
 
 // update a product
-export const updateUpdate = async (req: Request, res: Response) => {
+export const updateProduct = async (req: Request, res: Response) => {
   // update a product logic
   try {
+    // get product id from request params
     const { id } = req.params;
 
     // check if id is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
-        error: "Invalid category id",
+        error: "Invalid product id",
       });
     }
 
-    const { name } = req.body;
+    // check if product exists in database
+    const productExists = await Product.exists({ _id: id });
 
-    // find product by id or name
-    const product: IProduct | null = await Product.findByIdAndUpdate(
-      id,
-      { name },
-      { new: true }
-    );
-
-    if (!product) {
+    if (!productExists) {
       return res.status(404).json({
         error: "product not found",
       });
     }
+
+    // now that we know product exists, we can update it
+    const { title, description, price, categoryID, available } = req.body;
+
+    // check if categoryID is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(categoryID)) {
+      return res.status(400).json({
+        error: "Invalid category id",
+      });
+    }
+
+    // check if category exists in database
+    const categoryExists = await Category.exists({ _id: categoryID });
+
+    if (!categoryExists) {
+      return res.status(400).json({
+        error: "category does not exist",
+      });
+    }
+
+    // update product
+    const product: IProduct | null = await Product.findByIdAndUpdate(
+      id,
+      {
+        title,
+        description,
+        price,
+        categoryID,
+        available,
+      },
+      { new: true }
+    );
 
     res.status(200).json({
       product,

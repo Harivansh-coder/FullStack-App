@@ -7,7 +7,7 @@ export interface IProduct extends Document {
   title: string;
   description: string;
   price: number;
-  category: string;
+  categoryID: mongoose.Types.ObjectId;
   available: boolean;
 }
 
@@ -35,12 +35,10 @@ const productSchema: Schema<IProduct> = new Schema(
       required: true,
       trim: true,
     },
-    category: {
-      type: String,
+    categoryID: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
-      trim: true,
-      min: 3,
-      max: 50,
     },
 
     available: {

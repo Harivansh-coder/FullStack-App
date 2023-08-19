@@ -5,8 +5,8 @@ import {
   createProduct,
   getAllProducts,
   getProduct,
-  updateUpdate,
   deleteProduct,
+  updateProduct,
 } from "../controller/product";
 import validateRequestBody from "../middleware/validate";
 import { validateProduct, validateUpdateProduct } from "../utility/validate";
@@ -23,7 +23,7 @@ productRouter.post("/", validateRequestBody(validateProduct), createProduct);
 productRouter.put(
   "/:id",
   validateRequestBody(validateUpdateProduct),
-  updateUpdate
+  updateProduct
 );
 
 productRouter.delete("/:id", deleteProduct);

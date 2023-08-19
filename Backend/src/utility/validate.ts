@@ -64,11 +64,8 @@ export const validateProduct = yup.object({
       .number()
       .required("price is required")
       .min(0, "price must be a non negative number"),
-    category: yup
-      .string()
-      .required("category is required")
-      .min(3, "category is too short")
-      .max(50, "category is too long"),
+    categoryID: yup.string().required("categoryID is required"),
+
     available: yup.boolean().default(true),
   }),
 });
@@ -85,10 +82,7 @@ export const validateUpdateProduct = yup.object({
       .min(3, "description is too short")
       .max(2000, "description is too long"),
     price: yup.number().min(0, "price must be a non negative number"),
-    category: yup
-      .string()
-      .min(3, "category is too short")
-      .max(50, "category is too long"),
+    categoryID: yup.string(),
     available: yup.boolean(),
   }),
 });
