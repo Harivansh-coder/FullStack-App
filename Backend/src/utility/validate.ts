@@ -2,6 +2,7 @@
 
 import * as yup from "yup";
 
+// validate the request body of the register route
 export const validateRegister = yup.object({
   body: yup.object({
     name: yup
@@ -23,6 +24,7 @@ export const validateRegister = yup.object({
   }),
 });
 
+// validate the request body of the login route
 export const validateLogin = yup.object({
   body: yup.object({
     email: yup
@@ -30,5 +32,63 @@ export const validateLogin = yup.object({
       .matches(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/, "invalid email")
       .required("email is required"),
     password: yup.string().required("password is required"),
+  }),
+});
+
+// validate the request body of the create category route
+export const validateCategory = yup.object({
+  body: yup.object({
+    name: yup
+      .string()
+      .required("category name is required")
+      .min(3, "name is too short")
+      .max(50, "name is too long"),
+  }),
+});
+
+// validate the request body of the create product route
+
+export const validateProduct = yup.object({
+  body: yup.object({
+    title: yup
+      .string()
+      .required("title is required")
+      .min(3, "title is too short")
+      .max(50, "title is too long"),
+    description: yup
+      .string()
+      .required("description is required")
+      .min(3, "description is too short")
+      .max(2000, "description is too long"),
+    price: yup
+      .number()
+      .required("price is required")
+      .min(0, "price must be a non negative number"),
+    category: yup
+      .string()
+      .required("category is required")
+      .min(3, "category is too short")
+      .max(50, "category is too long"),
+    available: yup.boolean().default(true),
+  }),
+});
+
+// validate the request body of the update product route
+export const validateUpdateProduct = yup.object({
+  body: yup.object({
+    title: yup
+      .string()
+      .min(3, "title is too short")
+      .max(50, "title is too long"),
+    description: yup
+      .string()
+      .min(3, "description is too short")
+      .max(2000, "description is too long"),
+    price: yup.number().min(0, "price must be a non negative number"),
+    category: yup
+      .string()
+      .min(3, "category is too short")
+      .max(50, "category is too long"),
+    available: yup.boolean(),
   }),
 });
