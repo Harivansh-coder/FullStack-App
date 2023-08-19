@@ -34,8 +34,8 @@ const userSchema: Schema<IUser> = new Schema(
     type: {
       type: String,
       required: true,
-      enum: ["customer", "seller"],
-      default: "customer",
+      enum: ["buyer", "seller"],
+      default: "buyer",
     },
   },
   {
