@@ -2,7 +2,7 @@
 
 import { Request, Response, NextFunction } from "express";
 
-const validateUsersRequest =
+const validateRequestBody =
   (schema: any) => async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.validate({
@@ -16,4 +16,4 @@ const validateUsersRequest =
     }
   };
 
-export default validateUsersRequest;
+export default validateRequestBody;

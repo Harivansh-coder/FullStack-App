@@ -1,28 +1,31 @@
 // category router
 import express from "express";
+import { validateCategory } from "../utility/validate";
+import validateRequestBody from "../middleware/validate";
+import {
+  createCategory,
+  deleteCategory,
+  getAllCategory,
+  getCategory,
+  updateCategory,
+} from "../controller/category";
 
 const categoryRouter = express.Router();
 
 // category route
-categoryRouter.get("/", (req, res) => {
-  res.send("Get all categories");
-});
+categoryRouter.get("/", getAllCategory);
 
-categoryRouter.get("/:id", (req, res) => {
-  res.send("Get a category");
-});
+categoryRouter.get("/:id", getCategory);
 
-categoryRouter.post("/", (req, res) => {
-  res.send("Create a category");
-});
+categoryRouter.post("/", validateRequestBody(validateCategory), createCategory);
 
-categoryRouter.put("/:id", (req, res) => {
-  res.send("Update a category");
-});
+categoryRouter.put(
+  "/:id",
+  validateRequestBody(validateCategory),
+  updateCategory
+);
 
-categoryRouter.delete("/:id", (req, res) => {
-  res.send("Delete a category");
-});
+categoryRouter.delete("/:id", deleteCategory);
 
 // export the categoryRouter
 export default categoryRouter;
