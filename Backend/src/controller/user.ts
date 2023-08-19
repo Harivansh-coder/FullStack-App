@@ -62,7 +62,7 @@ export const loginUser = async (req: Request, res: Response) => {
       });
     }
 
-    const token = await generateToken(user._id);
+    const token = await generateToken(user._id, user.type);
 
     res.status(200).json({
       "access-token": token,
