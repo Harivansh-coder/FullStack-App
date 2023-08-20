@@ -20,6 +20,8 @@
     "express-rate-limit": "^6.9.0",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "yarn": "^1.22.19",
     "yup": "^1.2.0"
   },

@@ -5,10 +5,12 @@ import userRouter from "./router/user";
 import categoryRouter from "./router/category";
 import productRouter from "./router/product";
 import dotenv from "dotenv";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import rateLimitMiddleware from "./middleware/ratelimit";
 import cartRouter from "./router/cart";
 import orderRouter from "./router/order";
+import swaggerUi from "swagger-ui-express";
+import specs from "./swagger-config";
 
 // initialize configuration
 dotenv.config();
@@ -23,6 +25,15 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(rateLimitMiddleware); // apply rate limit middleware to all routes
+
+// Swagger UI
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, {
+    explorer: true,
+  })
+);
 
 // Mount the controller at /api
 app.get("/api", (req, res) => {
