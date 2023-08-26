@@ -9,7 +9,7 @@ const validateRequestBody =
         body: req.body,
       });
       next();
-    } catch (error) {
+    } catch (error: any) {
       res.status(400).json({
         error: error.message,
       });

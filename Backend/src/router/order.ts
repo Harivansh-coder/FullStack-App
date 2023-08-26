@@ -1,6 +1,6 @@
 // order route for buyer to make order
 
-import express, { Request, Response } from "express";
+import express from "express";
 import { getAllOrders, getOrder, placeOrder } from "../controller/order";
 import verifyUserToken from "../middleware/authenticate";
 import checkUserType from "../middleware/checkUser";

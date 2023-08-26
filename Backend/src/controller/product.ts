@@ -39,16 +39,16 @@ export const createProduct = async (req: Request, res: Response) => {
     // save product to database
     await product.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "product created successfully",
     });
-  } catch (error) {
+  } catch (error: any) {
     if (error.code === 11000) {
-      res.status(400).json({
+      return res.status(400).json({
         error: "product already exists",
       });
     } else {
-      res.status(500).json({
+      return res.status(500).json({
         error: "An error occurred",
         message: error.message,
       });
@@ -57,16 +57,16 @@ export const createProduct = async (req: Request, res: Response) => {
 };
 
 // get all products
-export const getAllProducts = async (req: Request, res: Response) => {
+export const getAllProducts = async (_req: Request, res: Response) => {
   // get all products logic
   try {
     const products: IProduct[] = await Product.find().populate("category");
 
-    res.status(200).json({
+    return res.status(200).json({
       products,
     });
-  } catch (error) {
-    res.status(500).json({
+  } catch (error: any) {
+    return res.status(500).json({
       error: "An error occurred",
       message: error.message,
     });
@@ -80,15 +80,14 @@ export const getProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     // check if id is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         error: "Invalid category id",
       });
     }
 
-    const product: IProduct | null = await Product.findById(id).populate(
-      "category"
-    );
+    const product: IProduct | null =
+      await Product.findById(id).populate("category");
 
     if (!product) {
       return res.status(404).json({
@@ -96,11 +95,11 @@ export const getProduct = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       product,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       error: "An error occurred",
     });
   }
@@ -114,7 +113,7 @@ export const updateProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     // check if id is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         error: "Invalid product id",
       });
@@ -161,11 +160,11 @@ export const updateProduct = async (req: Request, res: Response) => {
       { new: true }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       product,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       error: "An error occurred",
     });
   }
@@ -178,7 +177,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     // check if id is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         error: "Invalid category id",
       });
@@ -193,11 +192,11 @@ export const deleteProduct = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(204).json({
+    return res.status(204).json({
       message: "product deleted successfully",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       error: "An error occurred",
     });
   }

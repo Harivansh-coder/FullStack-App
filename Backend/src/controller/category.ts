@@ -2,7 +2,7 @@
 
 import { Request, Response } from "express";
 import Category, { ICategory } from "../model/category";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 // create category
 export const createCategory = async (req: Request, res: Response) => {
@@ -18,16 +18,16 @@ export const createCategory = async (req: Request, res: Response) => {
     // save category to database
     await category.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "Category created successfully",
     });
-  } catch (error) {
+  } catch (error: any) {
     if (error.code === 11000) {
-      res.status(400).json({
+      return res.status(400).json({
         error: "Category already exists",
       });
     } else {
-      res.status(500).json({
+      return res.status(500).json({
         error: "An error occurred",
       });
     }
@@ -35,16 +35,16 @@ export const createCategory = async (req: Request, res: Response) => {
 };
 
 // get all categories
-export const getAllCategory = async (req: Request, res: Response) => {
+export const getAllCategory = async (_req: Request, res: Response) => {
   // get all categories logic
   try {
     const categories: ICategory[] = await Category.find();
 
-    res.status(200).json({
+    return res.status(200).json({
       categories,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       error: "An error occurred",
     });
   }
@@ -57,7 +57,7 @@ export const getCategory = async (req: Request, res: Response) => {
     const id = req.params.id;
 
     // check if id is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         error: "Invalid category id",
       });
@@ -72,11 +72,11 @@ export const getCategory = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       category,
     });
-  } catch (error) {
-    res.status(500).json({
+  } catch (error: any) {
+    return res.status(500).json({
       error: "An error occurred",
       message: error.message,
     });
@@ -90,7 +90,7 @@ export const updateCategory = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     // check if id is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         error: "Invalid category id",
       });
@@ -111,11 +111,11 @@ export const updateCategory = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       category,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       error: "An error occurred",
     });
   }
@@ -128,7 +128,7 @@ export const deleteCategory = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     // check if id is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         error: "Invalid category id",
       });
@@ -143,11 +143,11 @@ export const deleteCategory = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(204).json({
+    return res.status(204).json({
       message: "Category deleted successfully",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       error: "An error occurred",
     });
   }

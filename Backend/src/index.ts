@@ -36,7 +36,7 @@ app.use(
 );
 
 // Mount the controller at /api
-app.get("/api", (req, res) => {
+app.get("/api", (_req, res) => {
   res.send("The sedulous hyena ate the antelope!");
 });
 
