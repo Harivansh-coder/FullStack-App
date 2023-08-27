@@ -56,10 +56,10 @@ export const addItemToCart = async (req: Request, res: Response) => {
       "items.product"
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       cart: updatedCart,
     });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({
       error: "An error occurred",
       message: error.message,
@@ -78,7 +78,7 @@ export const viewCart = async (req: Request, res: Response) => {
       "items.product"
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       cart,
     });
   } catch (error) {
@@ -127,7 +127,7 @@ export const removeItemFromCart = async (req: Request, res: Response) => {
       { new: true }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       cart,
     });
   } catch (error) {
@@ -174,7 +174,7 @@ export const updateItemQuantity = async (req: Request, res: Response) => {
       { new: true }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       cart,
     });
   } catch (error) {

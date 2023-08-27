@@ -26,7 +26,7 @@ export const registerUser = async (req: Request, res: Response) => {
     res.status(201).json({
       message: "User registered successfully",
     });
-  } catch (error) {
+  } catch (error: any) {
     if (error.code === 11000) {
       res.status(400).json({
         error: "Email already exists",
@@ -61,14 +61,14 @@ export const loginUser = async (req: Request, res: Response) => {
       });
     }
 
-    const token = await generateToken(user._id, user.type);
+    const token = generateToken(user._id, user.type);
 
-    res.status(200).json({
+    return res.status(200).json({
       "access-token": token,
       "token-type": "Bearer",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       error: "An error occurred",
     });
   }

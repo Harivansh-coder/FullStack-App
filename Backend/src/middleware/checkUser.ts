@@ -13,7 +13,7 @@ const checkUserType =
         });
       }
 
-      next();
+     return  next();
     } catch (error) {
       return res.status(500).json({
         error: "An error occurred",

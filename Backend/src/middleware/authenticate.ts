@@ -1,7 +1,12 @@
 // authenticate the user middleware using jwt
 
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
+
+type MyJWTPayload = JwtPayload & {
+  type: string;
+  id: string;
+};
 
 const verifyUserToken = async (
   req: Request,
@@ -20,11 +25,13 @@ const verifyUserToken = async (
     const decodedToken = jwt.verify(
       token,
       process.env.JWT_SECRET_KEY as string
-    );
+    ) as MyJWTPayload;
 
-    req.user = decodedToken;
+    if (typeof decodedToken !== "string") {
+      req.user = decodedToken;
+    }
 
-    next();
+    return next();
   } catch (error) {
     return res.status(401).json({
       error: "Unauthorized",

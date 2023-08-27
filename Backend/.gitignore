@@ -17,3 +17,5 @@ coverage
 benchmarks/graphs
 
 /api/**/*.js.map
+
+/dist

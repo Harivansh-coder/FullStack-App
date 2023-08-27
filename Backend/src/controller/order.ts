@@ -1,7 +1,7 @@
 // order route for buyer to make order
 
-import express, { Request, Response } from "express";
-import Cart, { ICart } from "../model/cart";
+import { Request, Response } from "express";
+import Cart from "../model/cart";
 import Order from "../model/order";
 import mongoose from "mongoose";
 
@@ -45,7 +45,7 @@ export const placeOrder = async (req: Request, res: Response) => {
       { new: true }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       order,
     });
   } catch (error) {
@@ -62,10 +62,10 @@ export const getAllOrders = async (req: Request, res: Response) => {
       "items.product"
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       orders,
     });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({
       error: "An error occurred",
       message: error.message,
@@ -79,7 +79,7 @@ export const getOrder = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     // check if id is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         error: "Invalid order id",
       });
@@ -96,7 +96,7 @@ export const getOrder = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       order,
     });
   } catch (error) {
